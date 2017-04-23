@@ -119,7 +119,7 @@
 
 (use-package evil-magit
   :ensure t)
-(general-define-key "C-x g" 'magit-status)
+(general-define-key "C-X g" 'magit-status)
 
 ; Evil-mode remaps
 (general-define-key "C-k" 'evil-window-up
@@ -148,3 +148,6 @@
 ; ansi Shell colors
 (add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
+
+; Go to def
+(general-define-key "g-t" `helm-etags-select)
