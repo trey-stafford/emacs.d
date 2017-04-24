@@ -111,7 +111,11 @@
 (use-package camcorder
   :ensure t)
 
+; Auto highlighting. TODO: need to fix.
+(use-package auto-highlight-symbol
   :ensure t)
+(general-define-key "C-z" 'auto-highlight-symbol-mode)
+(setq ahs-idle-interval 0)
 
 ; Magit
 (use-package magit
