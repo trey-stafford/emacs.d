@@ -162,3 +162,8 @@
 (general-define-key "g t" `helm-etags-select)
 (general-define-key :prefix "SPC"
 		    "t" `projectile-find-tag)
+
+
+; Hightlight matching enclosing brakets
+(show-paren-mode 1)
+(setq show-paren-delay 0)
