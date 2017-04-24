@@ -167,3 +167,7 @@
 ; Hightlight matching enclosing brakets
 (show-paren-mode 1)
 (setq show-paren-delay 0)
+
+
+; Set the tag command that projectile will use.
+(setq projectile-tags-command "ctags-exuberant -Rea -f \"%s\" %s")
