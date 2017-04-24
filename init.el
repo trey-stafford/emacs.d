@@ -159,4 +159,6 @@
 (add-to-list 'comint-output-filter-functions 'ansi-color-process-output)
 
 ; Go to def
-(general-define-key "g-t" `helm-etags-select)
+(general-define-key "g t" `helm-etags-select)
+(general-define-key :prefix "SPC"
+		    "t" `projectile-find-tag)
