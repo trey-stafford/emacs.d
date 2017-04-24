@@ -100,6 +100,8 @@
   (elpy-enable)
   (setenv "WORKON_HOME" "~/miniconda3/envs")
   (pyvenv-mode 1))
+; TODO: eventually try running flycheck with elpy. See https://github.com/jorgenschaefer/elpy/issues/137
+
 
 ; Improved Debugger
 (use-package realgud
