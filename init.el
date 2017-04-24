@@ -142,7 +142,7 @@
 		    "h" 'evil-window-increase-width
 		    "l" 'evil-window-decrease-width)
 
-(general-define-key "C-z" `help)
+(general-define-key "C-q" `help)
 
 ; Turn off the toolbar, menubar, scrollbar, and startup message.
 (tool-bar-mode -1)
