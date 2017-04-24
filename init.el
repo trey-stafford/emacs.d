@@ -109,8 +109,6 @@
 (use-package camcorder
   :ensure t)
 
-; hackernews!
-(use-package hackernews
   :ensure t)
 
 ; Magit
