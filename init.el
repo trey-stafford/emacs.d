@@ -276,3 +276,17 @@
 ; (<letter>@/!) == log time, prompt for a note, and log time when state is left.
 (setq org-todo-keywords
       '((sequence "TODO(t)" "IN-PROGRESS(p)" "WAITING(w@/!)" "|" "DONE(d)" "CANCELED(c@)")))
+
+; Make indenting sensible.
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+
+; Set the backup file location (TODO: perhaps place this elsewhere)
+(setq backup-directory-alist
+    `((".*" . ,temporary-file-directory)))
+(setq auto-save-file-name-transforms
+    `((".*" ,temporary-file-directory t)))
+
+; The following line would disable symbolic link lock files. May be necessary to prevent rsync problems when provisioning machines.
+; (setq create-lockfiles nil)
+
