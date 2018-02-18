@@ -224,3 +224,8 @@
 ; Make inline code markdown easier to read:
 (set-face-attribute 'markdown-inline-code-face nil :foreground "#000")
 
+; Create a keybinding for opening the current directory in dired
+(general-define-key :prefix "SPC"
+                    "d" '(lambda()
+                           (interactive)
+                           (dired ".")))
