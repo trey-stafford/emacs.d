@@ -221,3 +221,6 @@
                    (abbreviate-file-name (buffer-file-name))
                  "%b"))))
 
+; Make inline code markdown easier to read:
+(set-face-attribute 'markdown-inline-code-face nil :foreground "#000")
+
