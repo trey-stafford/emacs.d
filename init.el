@@ -199,3 +199,13 @@
 
 ; Keep the clipboard from other programs in the killring.
 (setq save-interprogram-paste-before-kill t)
+; Perspective (workspaces in emacs)
+(use-package perspective
+  :ensure t)
+(persp-mode)
+
+(general-define-key :prefix "SPC"
+                    "w" 'persp-switch
+                    "l" 'persp-next
+                    "h" 'persp-prev)
+
