@@ -166,6 +166,7 @@
 (setq dired-listing-switches "-alh")
 
 ; Set global font size
+; (set-face-attribute 'default nil :height 113)
 (set-face-attribute 'default nil :height 90)
 
 ; TODO: http://codewinds.com/blog/2015-04-02-emacs-flycheck-eslint-jsx.html#!
