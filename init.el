@@ -199,6 +199,12 @@
 
 ; Keep the clipboard from other programs in the killring.
 (setq save-interprogram-paste-before-kill t)
+
+
+(use-package indent-guide
+  :ensure t)
+(indent-guide-global-mode)
+
 ; Perspective (workspaces in emacs)
 (use-package perspective
   :ensure t)
