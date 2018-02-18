@@ -215,3 +215,9 @@
                     "l" 'persp-next
                     "h" 'persp-prev)
 
+; Show the current buffer's path in the frame's title.
+(setq frame-title-format
+      '((:eval (if (buffer-file-name)
+                   (abbreviate-file-name (buffer-file-name))
+                 "%b"))))
+
