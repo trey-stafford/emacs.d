@@ -229,3 +229,20 @@
                     "d" '(lambda()
                            (interactive)
                            (dired ".")))
+
+; Make the kill ring hold more than the default 60 entries.
+(setq kill-ring-max 200)
+(put 'upcase-region 'disabled nil)
+
+; Don't create lockfiles because it is SUPER annoying to have provisioning stop
+; due to symlinks without referants
+(setq create-lockfiles nil)
+
+; Stop showing recent commits in the magit status
+(magit-add-section-hook 'magit-status-sections-hook
+                        'magit-insert-unpushed-to-upstream
+                        'magit-insert-unpushed-to-upstream-or-recent
+                        'replace)
+
+; Force a confirmation when closing emacs.
+(setq confirm-kill-emacs 'y-or-n-p)
