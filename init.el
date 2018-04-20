@@ -247,3 +247,7 @@
 
 ; Force a confirmation when closing emacs.
 (setq confirm-kill-emacs 'y-or-n-p)
+
+(general-define-key :prefix "SPC"
+                    "k" 'delete-frame)
+
