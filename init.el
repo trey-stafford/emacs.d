@@ -213,7 +213,8 @@
 (general-define-key :prefix "SPC"
                     "w" 'persp-switch
                     "l" 'persp-next
-                    "h" 'persp-prev)
+                    "h" 'persp-prev
+                    "p" 'projectile-persp-switch-project)
 
 ; Show the current buffer's path in the frame's title.
 (setq frame-title-format
