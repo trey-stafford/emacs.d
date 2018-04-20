@@ -251,3 +251,5 @@
 (general-define-key :prefix "SPC"
                     "k" 'delete-frame)
 
+; start the emacs server so that emacs-everywhere works.
+(server-start)
