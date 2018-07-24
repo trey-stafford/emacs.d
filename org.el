@@ -88,3 +88,6 @@
 ; (<letter>@/!) == log time, prompt for a note, and log time when state is left.
 (setq org-todo-keywords
       '((sequence "TODO(t)" "IN-PROGRESS(p)" "WAITING(w@/!)" "|" "DONE(d)" "CANCELED(c@)")))
+
+; Disable relative line numbers in org mode to prevent major slow downs in large files.
+(add-hook 'org-mode-hook (lambda () (relative-line-numbers-mode -1)))
