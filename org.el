@@ -68,7 +68,7 @@
     "j" `org-move-item-down
     "n" `org-narrow-to-subtree
     "N" `org-narrow-to-block
-    "w" `widen
+;     "w" `widen  ; not good bc I use spc-w for persp-switch
     "h" `org-toggle-heading
     "o" `org-insert-heading-after-current
     "O" `org-insert-heading
