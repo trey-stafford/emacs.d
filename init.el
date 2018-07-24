@@ -259,5 +259,12 @@
 ; spell checking
 (global-set-key (kbd "<f8>") 'ispell-word)
 
+; yansnippet
+(use-package yasnippet
+  :ensure t)
+
+(use-package yasnippet-snippets
+  :ensure t)
+
 ; start the emacs server so that emacs-everywhere works.
 (server-start)
