@@ -61,8 +61,7 @@
 (use-package helm
   :ensure t
   :config
-  (helm-mode t)
-  (helm-linum-relative-mode t))
+  (helm-mode t))
 (require 'helm-config)
 (general-define-key "M-x" 'helm-M-x)
 ; SPC-f will open the find-file menu
