@@ -250,5 +250,11 @@
 (general-define-key :prefix "SPC"
                     "k" 'delete-frame)
 
+; evil-surround: used for surrounding a region w/ e.g., quotes
+(use-package evil-surround
+  :ensure t
+  :config
+  (global-evil-surround-mode 1))
+
 ; start the emacs server so that emacs-everywhere works.
 (server-start)
