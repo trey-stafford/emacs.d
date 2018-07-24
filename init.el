@@ -256,5 +256,8 @@
   :config
   (global-evil-surround-mode 1))
 
+; spell checking
+(global-set-key (kbd "<f8>") 'ispell-word)
+
 ; start the emacs server so that emacs-everywhere works.
 (server-start)
