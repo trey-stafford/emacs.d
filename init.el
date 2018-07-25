@@ -66,7 +66,8 @@
 (general-define-key "M-x" 'helm-M-x)
 ; SPC-f will open the find-file menu
 (general-define-key :prefix "SPC"
-		    "f" 'helm-locate)
+                    "f" 'helm-locate
+                    "r" 'helm-show-kill-ring)
 
 (load "~/.emacs.d/projectile.el")
 
