@@ -169,6 +169,24 @@
 ; (set-face-attribute 'default nil :height 110)
 (set-face-attribute 'default nil :height 90)
 
+(defun increase-font-height ()
+  "docstring"
+  (interactive)
+  (set-face-attribute 'default
+                      nil
+                      :height (+ (face-attribute 'default :height) 10)))
+
+(defun decrease-font-height ()
+  "docstring"
+  (interactive)
+  (set-face-attribute 'default
+                      nil
+                      :height (- (face-attribute 'default :height) 10)))
+
+(general-define-key :prefix "SPC"
+            "-" 'decrease-font-height
+            "=" 'increase-font-height)
+
 ; TODO: http://codewinds.com/blog/2015-04-02-emacs-flycheck-eslint-jsx.html#!
 ; Flycheck
 (use-package flycheck
