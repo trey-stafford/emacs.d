@@ -1,14 +1,6 @@
-; Set where automatically generated customization will be placed.
-
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-(package-initialize)
-
 ; Load package configuraiton (use-package, repos)
 (load "~/.emacs.d/packages.el")
-
+; Set where automatically generated customization will be placed.
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 
