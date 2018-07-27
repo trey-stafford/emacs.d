@@ -287,5 +287,10 @@
 (use-package yasnippet-snippets
   :ensure t)
 
+; Use swiper for conducting searches.
+(use-package swiper-helm
+    :ensure t)
+(general-define-key "/" `swiper-helm)
+
 ; start the emacs server so that emacs-everywhere works.
 (server-start)
