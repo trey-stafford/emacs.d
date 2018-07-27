@@ -32,12 +32,6 @@
     :ensure t)
 (setq general-default-keymaps 'evil-normal-state-map)
 
-; Relative line numbers
-(use-package relative-line-numbers
-  :ensure t
-  :config
-  (global-relative-line-numbers-mode))
-
 ; Theme
 (use-package monokai-theme
   :ensure t
