@@ -1,10 +1,17 @@
 ; Projectile
+(use-package counsel
+  :ensure t)
+
+(use-package counsel-projectile
+  :ensure t)
+
+; TODO Using ivy for now because a change w/ helm (?) or projectile (?) has broken helm-projectile.
 (use-package projectile
   :ensure t
   :config
     (projectile-mode t)
-    (setq projectile-completion-system 'helm
-          projectile-switch-project-action 'helm-projectile))
+    (setq projectile-completion-system 'ivy
+          projectile-switch-project-action 'counsel-projectile-switch-project))
 
 (general-define-key :prefix ";"
 		    "p" 'projectile-find-file
