@@ -6,6 +6,9 @@
 ;; You may delete these explanatory comments.
 (package-initialize)
 
+; Load package configuraiton (use-package, repos)
+(load "~/.emacs.d/packages.el")
+
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 
@@ -14,9 +17,6 @@
 (menu-bar-mode -99)
 (toggle-scroll-bar -1)
 (setq inhibit-startup-message t)
-
-; Load package configuraiton (use-package, repos)
-(load "~/.emacs.d/packages.el")
 
 ; Get the execution PATH from the shell
 (use-package exec-path-from-shell
@@ -100,6 +100,8 @@
 		    "l" 'evil-window-decrease-width)
 
 (general-define-key "C-q" `help)
+
+(setq evil-toggle-key "C-`")
 
 
 ; Display buffer list by pressing SPC-B

@@ -1,15 +1,3 @@
-(add-hook 'web-mode-hook
-      (lambda ()
-        (setq tab-width 2)))
-
-(add-hook 'jsx-mode-hook
-      (lambda ()
-        (setq tab-width 2)))
-
-; make tabs 2 spaces in js
-(setq js-indent-level 2)
-
-
 ; CSS mode 
 (use-package css-mode
   :ensure t
@@ -19,9 +7,6 @@
 (add-hook 'css-mode-hook
       (lambda ()
         (setq tab-width 2)))
-
-; javascript stuff
-(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
 
 ;; disable json-jsonlist checking for json files
 (setq-default flycheck-disabled-checkers
@@ -34,21 +19,13 @@
     '(javascript-jshint)))
 
 ;; adjust indents for web-mode to 2 spaces
-(defun my-web-mode-hook ()
-  "Hooks for Web mode. Adjust indents"
-  ;;; http://web-mode.org/
-  (setq web-mode-markup-indent-offset 2)
-  (setq web-mode-css-indent-offset 2)
-  (setq web-mode-code-indent-offset 2))
-(add-hook 'web-mode-hook  'my-web-mode-hook)
-
-;; for better jsx syntax-highlighting in web-mode
-;; - courtesy of Patrick @halbtuerke
-(defadvice web-mode-highlight-part (around tweak-jsx activate)
-  (if (equal web-mode-content-type "jsx")
-    (let ((web-mode-enable-part-face nil))
-      ad-do-it)
-    ad-do-it))
+; (defun my-web-mode-hook ()
+;   "Hooks for Web mode. Adjust indents"
+;   ;;; http://web-mode.org/
+;   (setq web-mode-markup-indent-offset 2)
+;   (setq web-mode-css-indent-offset 2)
+;   (setq web-mode-code-indent-offset 2))
+; (add-hook 'web-mode-hook  'my-web-mode-hook)
 
 ;; use local eslint from node_modules before global
 ;; http://emacs.stackexchange.com/questions/21205/flycheck-with-file-relative-eslint-executable
@@ -62,3 +39,19 @@
     (when (and eslint (file-executable-p eslint))
       (setq-local flycheck-javascript-eslint-executable eslint))))
 (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
+
+; use js2-mode for js
+(use-package js2-mode
+  :ensure t
+  :config
+  (setq js2-basic-offset 2))
+
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+
+; use rjsx-mode for jsx
+(use-package rjsx-mode
+  :ensure t
+  :config
+  (setq js2-basic-offset 2))
+
+(add-to-list 'auto-mode-alist '("\\.jsx?\\'" . rjsx-mode))
