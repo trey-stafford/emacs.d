@@ -13,12 +13,15 @@
     (setq projectile-completion-system 'ivy
           projectile-switch-project-action 'counsel-projectile-switch-project))
 
+(use-package helm-ag
+  :ensure t)
+
 (general-define-key :prefix ";"
 		    "p" 'projectile-find-file
 		    "P" 'projectile-find-file-other-window
 		    "d" 'projectile-find-dir
 		    "D" 'projectile-find-dir-other-window
-		    "g" 'helm-projectile-grep
+		    "g" 'helm-projectile-ag
 		    "o" 'helm-projectile-switch-project
 		    "b" 'helm-projectile-switch-to-buffer)
 
