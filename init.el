@@ -34,7 +34,8 @@
 (use-package evil
   :ensure t
   :config
-  (evil-mode t))
+  (evil-mode t)
+  (setq evil-toggle-key 'nil))
 
 ;; Make evil-mode up/down operate in screen lines instead of logical lines
 (define-key evil-motion-state-map "j" 'evil-next-visual-line)
@@ -86,8 +87,6 @@
 		    "l" 'evil-window-decrease-width)
 
 (general-define-key "C-q" `help)
-
-(setq evil-toggle-key "C-`")
 
 
 ; Display buffer list by pressing SPC-B
@@ -277,6 +276,14 @@
 (use-package swiper-helm
     :ensure t)
 (general-define-key "/" `swiper-helm)
+
+; Use company mode.
+(add-hook 'after-init-hook 'global-company-mode)
+
+; Display relative line numbers.
+(global-display-line-numbers-mode 't)
+(setq display-line-numbers-type 'relative)
+(setq display-line-numbers-current-absolute 't)
 
 ; start the emacs server so that emacs-everywhere works.
 (server-start)

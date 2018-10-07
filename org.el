@@ -14,27 +14,28 @@
 ; Dont' let 'invisible' edits go unnoticed
 (setq org-catch-invisible-edits 'smart)
 
+; TODO this needs updating. Apparently org-insert-heading doesn't insert items anymore - only headings. Use org-insert-item instead.
 (defun org-new-item-below ()
   "Add a new list item"
   (interactive)
   (evil-append-line 1)
   (insert " ")
   (evil-force-normal-state)
-  (org-insert-heading)
+  (org-insert-item)
   (evil-insert 1))
 
 (defun org-new-item-above ()
   "Add a new list item"
   (interactive)
   (evil-first-non-blank)
-  (org-insert-heading)
+  (org-insert-item)
   (evil-insert 1))
 
 (defun org-new-checkbox-above ()
   "Add a new list item"
   (interactive)
   (evil-first-non-blank)
-  (org-insert-heading)
+  (org-insert-item)
   (insert "[ ] ")
   (org-update-statistics-cookies)
   (evil-insert 1))
@@ -45,7 +46,7 @@
   (evil-append-line 1)
   (insert " ")
   (evil-force-normal-state)
-  (org-insert-heading)
+  (org-insert-item)
   (insert "[ ] ")
   (org-update-statistics-cookies)
   (evil-insert 1))

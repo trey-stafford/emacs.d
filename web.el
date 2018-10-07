@@ -55,3 +55,15 @@
   (setq js2-basic-offset 2))
 
 (add-to-list 'auto-mode-alist '("\\.jsx?\\'" . rjsx-mode))
+
+; Temporary to see if this works well for autocompleting etc. in js
+(add-to-list 'load-path "/home/trst2284/code/tern/emacs/")
+(autoload 'tern-mode "tern.el" nil t)
+(autoload 'tern-mode "tern-auto-complete.el" nil t)
+
+(eval-after-load 'tern
+   '(progn
+      (require 'tern-auto-complete)
+      (tern-ac-setup)))
+
+(add-to-list 'company-backends 'company-tern)
