@@ -213,7 +213,9 @@
 ; Perspective (workspaces in emacs)
 (use-package perspective
   :ensure t)
-(persp-mode)
+
+(use-package persp-projectile
+  :ensure t)
 
 (general-define-key :prefix "SPC"
                     "w" 'persp-switch
@@ -284,6 +286,9 @@
 (global-display-line-numbers-mode 't)
 (setq display-line-numbers-type 'relative)
 (setq display-line-numbers-current-absolute 't)
+
+; Start persp-mode
+(persp-mode)
 
 ; start the emacs server so that emacs-everywhere works.
 (server-start)
