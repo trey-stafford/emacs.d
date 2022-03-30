@@ -4,38 +4,50 @@
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 
-; Turn off the toolbar, menubar, scrollbar, and startup message.
-(tool-bar-mode -1)
-(menu-bar-mode -99)
-(toggle-scroll-bar -1)
-(setq inhibit-startup-message t)
-
 ; Get the execution PATH from the shell
 (use-package exec-path-from-shell
   :ensure t)
 (exec-path-from-shell-initialize)
+
+; https://emacs-lsp.github.io/lsp-mode/page/performance/#adjust-gc-cons-threshold
+(setq gc-cons-threshold 100000000)
+; https://emacs-lsp.github.io/lsp-mode/page/performance/#increase-the-amount-of-data-which-emacs-reads-from-the-process
+(setq read-process-output-max (* 1024 1024)) ;; 1mb
 
 ; Now we can ensure the markdown-mode
 ; package is automatically installed
 (use-package markdown-mode
     :ensure t)
 
+(use-package jsonnet-mode
+    :ensure t)
+
 (use-package general
     :ensure t)
 (setq general-default-keymaps 'evil-normal-state-map)
 
-; Theme
-(use-package monokai-theme
-  :ensure t
-  :config
-  (load-theme 'monokai t))
-
 ; Evil mode.
 (use-package evil
   :ensure t
+  :init
+  (setq evil-want-keybinding nil)
   :config
   (evil-mode t)
   (setq evil-toggle-key 'nil))
+
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init '(dired calc calendar ediff)))
+
+; (add-to-list 'load-path "~/.emacs.d/evil-magit/")
+; (evil-collection-init '(magit))
+; (use-package evil-collection
+;   :after evil
+;   :ensure t
+;   :config
+;   (evil-collection-init))
 
 ;; Make evil-mode up/down operate in screen lines instead of logical lines
 (define-key evil-motion-state-map "j" 'evil-next-visual-line)
@@ -186,7 +198,56 @@
   :ensure t
   :init (global-flycheck-mode))
 
+
+(use-package company
+  :ensure t)
+
+; vvvvvvvvvvvvvvvvvvvvv JAVASCRIPT vvvvvvvvvvvvvvvvvvvvv
+(use-package tide
+  :ensure t
+  :after (typescript-mode company flycheck)
+  :hook ((typescript-mode . tide-setup)
+         (typescript-mode . tide-hl-identifier-mode)))
+
+(defun setup-tide-mode ()
+  (interactive)
+  (tide-setup)
+  (flycheck-mode +1)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (eldoc-mode +1)
+  (tide-hl-identifier-mode +1)
+  ;; company is an optional dependency. You have to
+  ;; install it separately via package-install
+  ;; `M-x package-install [ret] company`
+  (company-mode +1))
+
+;; aligns annotation to the right hand side
+(setq company-tooltip-align-annotations t)
+(add-hook 'typescript-mode-hook #'setup-tide-mode)
+
+(use-package web-mode
+  :ensure t)
+
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+(add-hook 'web-mode-hook
+          (lambda ()
+            (when (string-equal "tsx" (file-name-extension buffer-file-name))
+              (setup-tide-mode))))
+;; enable typescript-tslint checker
+(flycheck-add-mode 'typescript-tslint 'web-mode)
+
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+(add-hook 'web-mode-hook
+          (lambda ()
+            (when (string-equal "jsx" (file-name-extension buffer-file-name))
+              (setup-tide-mode))))
+;; configure jsx-tide checker to run after your default jsx checker
 (flycheck-add-mode 'javascript-eslint 'web-mode)
+; (flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append)
+
+; ^^^^^^^^^^^^^^^^^^^^^ JAVASCRIPT ^^^^^^^^^^^^^^^^^^^^^
 
 ; Ace window makes switching windows veasy
 (use-package ace-window
@@ -222,6 +283,7 @@
                     "l" 'persp-next
                     "h" 'persp-prev
                     "p" 'projectile-persp-switch-project)
+
 
 ; Show the current buffer's path in the frame's title.
 (setq frame-title-format
@@ -287,8 +349,72 @@
 (setq display-line-numbers-type 'relative)
 (setq display-line-numbers-current-absolute 't)
 
+; elm
+
+(use-package elm-mode
+  :ensure t
+  :mode ("\\.elm\\'" . elm-mode)
+  :config
+  (setq elm-format-on-save t))
+
+; docker
+(use-package docker
+  :ensure t
+  :bind ("C-c d" . docker))
+
+(use-package fill-function-arguments
+  :ensure t)
+
+;; Use system trash
+(setq delete-by-moving-to-trash 't)
+(setq trash-directory "/tmp/")
+
+
+; If another dired window is open, set the default copy location to that
+; location.
+(setq dired-dwim-target 't)
+
+; Preserve modification time when copying files w/ dired
+(setq dired-copy-preserve-time 't)
+
 ; Start persp-mode
 (persp-mode)
 
-; start the emacs server so that emacs-everywhere works.
-(server-start)
+; Auot-revert remote files
+(setq auto-revert-remote-files 't)
+
+; (use-package lsp-mode
+;   :init
+;   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+;   (setq lsp-keymap-prefix "C-c l")
+;   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+;          (python-mode . lsp)
+;          ;; if you want which-key integration
+;          (lsp-mode . lsp-enable-which-key-integration))
+;   :commands lsp)
+; 
+; (use-package helm-lsp :commands helm-lsp-workspace-symbol)
+; 
+; (use-package lsp-pyright
+;   :ensure t
+;   :hook (python-mode . (lambda ()
+;                           (require 'lsp-pyright)
+;                           (lsp))))  ; or lsp-deferred
+
+; Turn off the toolbar, menubar, scrollbar, and startup message.
+
+; Theme
+(use-package monokai-theme
+  :ensure t
+  :config
+  (load-theme 'monokai t))
+
+; Default markdown face is gray which makes it difficult to read against a black
+; background.
+; (set-face-background 'markdown-inline-code-face "green")
+(set-face-foreground 'markdown-inline-code-face "red")
+
+(tool-bar-mode -1)
+(menu-bar-mode -99)
+(toggle-scroll-bar -1)
+(setq inhibit-startup-message t)
