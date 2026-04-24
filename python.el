@@ -17,14 +17,39 @@
 
 ; lsp-pyright: Pyright language server backend for lsp-mode.
 ; Provides diagnostics, go-to-definition, and autocomplete for Python.
-; lsp-deferred defers startup until the buffer is actually visible and
-; interacted with, so persp-mode restoring background buffers will not
-; trigger LSP initialization for every saved project simultaneously.
+;
+; The python-mode hook gates on (get-buffer-window ... t) so that
+; persp-mode restoring background buffers at startup does NOT register
+; an lsp-deferred idle timer for every saved project.  Only buffers
+; that are already displayed in a window (i.e. explicitly opened by the
+; user) get Pyright started immediately.
+;
+; my/lsp-on-python-buffer-visible handles the complementary case: when
+; the user later switches to a perspective (or switches buffers) and a
+; previously-restored Python buffer becomes visible for the first time,
+; window-configuration-change-hook fires and LSP is started then.
 (use-package lsp-pyright
   :ensure t
   :hook (python-mode . (lambda ()
                           (require 'lsp-pyright)
-                          (lsp-deferred))))
+                          (when (get-buffer-window (current-buffer) t)
+                            (lsp-deferred)))))
+
+(defun my/lsp-on-python-buffer-visible ()
+  "Start lsp-pyright for any visible Python buffer that has not yet
+initialized LSP.  Called from window-configuration-change-hook so
+that buffers restored by persp-mode get Pyright only once the user
+actually navigates to their perspective."
+  (walk-windows
+   (lambda (win)
+     (with-current-buffer (window-buffer win)
+       (when (and (derived-mode-p 'python-mode)
+                  (not (bound-and-true-p lsp-mode))
+                  buffer-file-name)
+         (require 'lsp-pyright)
+         (lsp-deferred))))))
+
+(add-hook 'window-configuration-change-hook #'my/lsp-on-python-buffer-visible)
 
 ; lsp-ui: inline diagnostics, hover docs, and peek definitions.
 (use-package lsp-ui
