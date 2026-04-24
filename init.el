@@ -33,7 +33,13 @@
   (setq evil-want-keybinding nil)
   :config
   (evil-mode t)
-  (setq evil-toggle-key 'nil))
+  (setq evil-toggle-key 'nil)
+  ; TODO: ensure this works as expected.
+  ; (global-undo-tree-mode)
+  (evil-set-undo-system 'undo-tree)
+  )
+
+(setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
 
 (use-package evil-collection
   :after evil
@@ -61,7 +67,7 @@
   :ensure t
   :config
   (helm-mode t))
-(require 'helm-config)
+; (require 'helm-config)
 (general-define-key "M-x" 'helm-M-x)
 ; SPC-f will open the find-file menu
 (general-define-key :prefix "SPC"
@@ -246,6 +252,8 @@
 ;; configure jsx-tide checker to run after your default jsx checker
 (flycheck-add-mode 'javascript-eslint 'web-mode)
 ; (flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append)
+(setq web-mode-markup-indent-offset 2)
+(setq typescript-indent-level 2)
 
 ; ^^^^^^^^^^^^^^^^^^^^^ JAVASCRIPT ^^^^^^^^^^^^^^^^^^^^^
 
@@ -377,6 +385,9 @@
 ; Preserve modification time when copying files w/ dired
 (setq dired-copy-preserve-time 't)
 
+; Set `.qmd` files (Quatro executable slides)
+(add-to-list 'auto-mode-alist '("\\.qmd\\'" . markdown-mode))
+
 ; Start persp-mode
 (persp-mode)
 
@@ -392,8 +403,8 @@
 ;          ;; if you want which-key integration
 ;          (lsp-mode . lsp-enable-which-key-integration))
 ;   :commands lsp)
-; 
-; (use-package helm-lsp :commands helm-lsp-workspace-symbol)
+
+(use-package helm-lsp :commands helm-lsp-workspace-symbol)
 ; 
 ; (use-package lsp-pyright
 ;   :ensure t
@@ -402,6 +413,10 @@
 ;                           (lsp))))  ; or lsp-deferred
 
 ; Turn off the toolbar, menubar, scrollbar, and startup message.
+
+
+; Load copilot
+; (load "~/.emacs.d/copilot.el")
 
 ; Theme
 (use-package monokai-theme

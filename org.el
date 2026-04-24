@@ -92,3 +92,16 @@
 
 ; Disable relative line numbers in org mode to prevent major slow downs in large files.
 (add-hook 'org-mode-hook (lambda () (relative-line-numbers-mode -1)))
+
+(use-package ob-mermaid
+  :ensure t)
+
+(setq ob-mermaid-cli-path "/home/trst2284/.nvm/versions/node/v22.2.0/bin/mmdc")
+
+(org-babel-do-load-languages
+    'org-babel-load-languages
+    '((mermaid . t)
+      (scheme . t))
+)
+
+(setq org-startup-with-inline-images t)

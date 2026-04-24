@@ -23,6 +23,7 @@
   (define-key map "p" nil)
   (define-key map "v" 'recenter-top-bottom)
   (define-key map "i" 'magit-section-toggle)
+  (define-key map "V" 'evil-visual-line)
   (define-key map "x" 'magit-discard))
 )
 

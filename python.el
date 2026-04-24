@@ -35,6 +35,17 @@
 ; (use-package ein
 ;     :ensure t)
 
+; (use-package pyvenv
+;   :ensure t
+;   :config(pyvenv-mode 1))
+
+(use-package pyvenv
+  :ensure t
+  :config
+  (setenv "WORKON_HOME" "/home/trst2284/miniconda3/envs/")
+  (pyvenv-mode 1)
+  (pyvenv-tracking-mode 1))
+
 (use-package lsp-mode
   :init
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
