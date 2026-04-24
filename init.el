@@ -340,7 +340,7 @@
 ; Start persp-mode
 (persp-mode)
 
-; Auot-revert remote files
+; Auto-revert remote files
 (setq auto-revert-remote-files 't)
 
 ; Theme
