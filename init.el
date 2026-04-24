@@ -26,6 +26,12 @@
     :ensure t)
 (setq general-default-keymaps 'evil-normal-state-map)
 
+; undo-tree: required by evil's undo system.
+(use-package undo-tree
+  :ensure t
+  :config
+  (global-undo-tree-mode))
+
 ; Evil mode.
 (use-package evil
   :ensure t
@@ -47,14 +53,6 @@
   :config
   (evil-collection-init '(dired calc calendar ediff)))
 
-; (add-to-list 'load-path "~/.emacs.d/evil-magit/")
-; (evil-collection-init '(magit))
-; (use-package evil-collection
-;   :after evil
-;   :ensure t
-;   :config
-;   (evil-collection-init))
-
 ;; Make evil-mode up/down operate in screen lines instead of logical lines
 (define-key evil-motion-state-map "j" 'evil-next-visual-line)
 (define-key evil-motion-state-map "k" 'evil-previous-visual-line)
@@ -67,7 +65,6 @@
   :ensure t
   :config
   (helm-mode t))
-; (require 'helm-config)
 (general-define-key "M-x" 'helm-M-x)
 ; SPC-f will open the find-file menu
 (general-define-key :prefix "SPC"
@@ -201,63 +198,13 @@
 (load "~/.emacs.d/web.el")
 
 (use-package puppet-mode
-  :ensure t
-  :init (global-flycheck-mode))
+  :ensure t)
 
 
 (use-package company
   :ensure t)
 
-; vvvvvvvvvvvvvvvvvvvvv JAVASCRIPT vvvvvvvvvvvvvvvvvvvvv
-(use-package tide
-  :ensure t
-  :after (typescript-mode company flycheck)
-  :hook ((typescript-mode . tide-setup)
-         (typescript-mode . tide-hl-identifier-mode)))
-
-(defun setup-tide-mode ()
-  (interactive)
-  (tide-setup)
-  (flycheck-mode +1)
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (eldoc-mode +1)
-  (tide-hl-identifier-mode +1)
-  ;; company is an optional dependency. You have to
-  ;; install it separately via package-install
-  ;; `M-x package-install [ret] company`
-  (company-mode +1))
-
-;; aligns annotation to the right hand side
-(setq company-tooltip-align-annotations t)
-(add-hook 'typescript-mode-hook #'setup-tide-mode)
-
-(use-package web-mode
-  :ensure t)
-
-(require 'web-mode)
-(add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
-(add-hook 'web-mode-hook
-          (lambda ()
-            (when (string-equal "tsx" (file-name-extension buffer-file-name))
-              (setup-tide-mode))))
-;; enable typescript-tslint checker
-(flycheck-add-mode 'typescript-tslint 'web-mode)
-
-(require 'web-mode)
-(add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
-(add-hook 'web-mode-hook
-          (lambda ()
-            (when (string-equal "jsx" (file-name-extension buffer-file-name))
-              (setup-tide-mode))))
-;; configure jsx-tide checker to run after your default jsx checker
-(flycheck-add-mode 'javascript-eslint 'web-mode)
-; (flycheck-add-next-checker 'javascript-eslint 'jsx-tide 'append)
-(setq web-mode-markup-indent-offset 2)
-(setq typescript-indent-level 2)
-
-; ^^^^^^^^^^^^^^^^^^^^^ JAVASCRIPT ^^^^^^^^^^^^^^^^^^^^^
-
-; Ace window makes switching windows veasy
+; Ace window makes switching windows easy
 (use-package ace-window
   :ensure t)
 
@@ -337,9 +284,11 @@
 ; spell checking
 (global-set-key (kbd "<f8>") 'ispell-word)
 
-; yansnippet
+; yasnippet
 (use-package yasnippet
-  :ensure t)
+  :ensure t
+  :config
+  (yas-global-mode 1))
 
 (use-package yasnippet-snippets
   :ensure t)
@@ -393,30 +342,6 @@
 
 ; Auot-revert remote files
 (setq auto-revert-remote-files 't)
-
-; (use-package lsp-mode
-;   :init
-;   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-;   (setq lsp-keymap-prefix "C-c l")
-;   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-;          (python-mode . lsp)
-;          ;; if you want which-key integration
-;          (lsp-mode . lsp-enable-which-key-integration))
-;   :commands lsp)
-
-(use-package helm-lsp :commands helm-lsp-workspace-symbol)
-; 
-; (use-package lsp-pyright
-;   :ensure t
-;   :hook (python-mode . (lambda ()
-;                           (require 'lsp-pyright)
-;                           (lsp))))  ; or lsp-deferred
-
-; Turn off the toolbar, menubar, scrollbar, and startup message.
-
-
-; Load copilot
-; (load "~/.emacs.d/copilot.el")
 
 ; Theme
 (use-package monokai-theme

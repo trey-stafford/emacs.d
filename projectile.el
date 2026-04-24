@@ -5,7 +5,8 @@
 (use-package counsel-projectile
   :ensure t)
 
-; TODO Using ivy for now because a change w/ helm (?) or projectile (?) has broken helm-projectile.
+; Using counsel-projectile as the completion interface (ivy-based).
+; helm-projectile keybindings replaced with counsel/projectile equivalents.
 (use-package projectile
   :ensure t
   :config
@@ -21,14 +22,12 @@
 		    "P" 'projectile-find-file-other-window
 		    "d" 'projectile-find-dir
 		    "D" 'projectile-find-dir-other-window
-		    "g" 'helm-projectile-ag
-		    "o" 'helm-projectile-switch-project
-		    "b" 'helm-projectile-switch-to-buffer)
+		    "g" 'helm-ag
+		    "o" 'counsel-projectile-switch-project
+		    "b" 'projectile-switch-to-buffer)
 
 (use-package helm-projectile
-  :ensure t
-  :config
-  (helm-projectile-on))
+  :ensure t)
 
 ; Hopefully temporary
 ; see: https://github.com/bbatsov/projectile/issues/1183
