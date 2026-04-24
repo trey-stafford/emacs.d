@@ -17,22 +17,14 @@
 
 ; lsp-pyright: Pyright language server backend for lsp-mode.
 ; Provides diagnostics, go-to-definition, and autocomplete for Python.
-; Only start LSP if the buffer is currently visible, so that persp-mode
-; restoring background buffers at startup does not trigger LSP for every
-; saved project simultaneously.
+; lsp-deferred defers startup until the buffer is actually visible and
+; interacted with, so persp-mode restoring background buffers will not
+; trigger LSP initialization for every saved project simultaneously.
 (use-package lsp-pyright
   :ensure t
   :hook (python-mode . (lambda ()
-                          (when (get-buffer-window (current-buffer) t)
-                            (lsp-deferred)))))
-
-; Start LSP when switching to an already-open python buffer that hasn't initialized it yet.
-(add-hook 'window-buffer-change-functions
-          (lambda (_win)
-            (when (and (derived-mode-p 'python-mode)
-                       (not (bound-and-true-p lsp-mode)))
-              (require 'lsp-pyright)
-              (lsp-deferred))))
+                          (require 'lsp-pyright)
+                          (lsp-deferred))))
 
 ; lsp-ui: inline diagnostics, hover docs, and peek definitions.
 (use-package lsp-ui
