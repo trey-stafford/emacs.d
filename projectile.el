@@ -14,8 +14,8 @@
     (setq projectile-completion-system 'ivy
           projectile-switch-project-action 'counsel-projectile-switch-project))
 
-(use-package helm-ag
-  :ensure t)
+; (use-package helm-ag
+;   :ensure t)
 
 (general-define-key :prefix ";"
 		    "p" 'projectile-find-file
