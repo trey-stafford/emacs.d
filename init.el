@@ -228,7 +228,12 @@
 
 ; Perspective (workspaces in emacs)
 (use-package perspective
-  :ensure t)
+  :ensure t
+  :init
+  ;; Must be set before persp-mode is activated
+  (setq persp-mode-prefix-key (kbd "C-c M-p"))
+  :config
+  (persp-mode 1))
 
 (use-package persp-projectile
   :ensure t)
