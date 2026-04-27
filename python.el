@@ -15,6 +15,10 @@
   (setq lsp-keymap-prefix "C-c l")
   :commands lsp)
 
+;; Don't auto-add new roots to the session without asking
+(setq lsp-auto-guess-root nil)
+(setq lsp-ask-valid-project-before-register t)
+
 ; lsp-pyright: Pyright language server backend for lsp-mode.
 ; Provides diagnostics, go-to-definition, and autocomplete for Python.
 ;
@@ -36,16 +40,15 @@
                             (lsp-deferred)))))
 
 (defun my/lsp-on-python-buffer-visible ()
-  "Start lsp-pyright for any visible Python buffer that has not yet
-initialized LSP.  Called from window-configuration-change-hook so
-that buffers restored by persp-mode get Pyright only once the user
-actually navigates to their perspective."
   (walk-windows
    (lambda (win)
      (with-current-buffer (window-buffer win)
        (when (and (derived-mode-p 'python-mode)
                   (not (bound-and-true-p lsp-mode))
-                  buffer-file-name)
+                  buffer-file-name
+                  ;; Only start LSP if the file is in the current projectile project
+                  (projectile-project-p)
+                  (string-prefix-p (projectile-project-root) buffer-file-name))
          (require 'lsp-pyright)
          (lsp-deferred))))))
 
