@@ -8,7 +8,7 @@
 ; hitting `q` kills magit completely (does not just close the revision
 ; buffer...)
 
-(with-eval-after-load "map"
+(with-eval-after-load 'magit
 (dolist (map (list magit-status-mode-map
 	       magit-log-mode-map
 	       magit-diff-mode-map
@@ -29,14 +29,6 @@
 
 (setq magit-diff-refine-hunk 'all)
 
-; (use-package evil-magit
-;   :ensure t)
-
-; use CTL-K/J to move rebase lines up and down in magit.
-; (with-eval-after-load 'git-rebase
-;   (evil-magit-define-key evil-magit-state 'git-rebase-mode-map "C-K" 'git-rebase-move-line-up)
-;   (evil-magit-define-key evil-magit-state 'git-rebase-mode-map "C-J" 'git-rebase-move-line-down))
-
 ; git-timemachine
 (use-package git-timemachine
   :ensure t)
@@ -56,7 +48,7 @@
 		    "c" 'magit-show-refs
 		    "L" 'magit-log-current
 		    "b" 'magit-blame
-		    "p" 'magit-push-popup
+		    "p" 'magit-push
 		    "u" 'magit-pull-from-upstream
 		    "d" 'magit-diff-buffer-file-popup
             "t" 'git-timemachine-toggle)

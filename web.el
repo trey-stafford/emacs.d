@@ -18,15 +18,6 @@
   (append flycheck-disabled-checkers
     '(javascript-jshint)))
 
-;; adjust indents for web-mode to 2 spaces
-; (defun my-web-mode-hook ()
-;   "Hooks for Web mode. Adjust indents"
-;   ;;; http://web-mode.org/
-;   (setq web-mode-markup-indent-offset 2)
-;   (setq web-mode-css-indent-offset 2)
-;   (setq web-mode-code-indent-offset 2))
-; (add-hook 'web-mode-hook  'my-web-mode-hook)
-
 ;; use local eslint from node_modules before global
 ;; http://emacs.stackexchange.com/questions/21205/flycheck-with-file-relative-eslint-executable
 (defun my/use-eslint-from-node-modules ()
@@ -56,14 +47,53 @@
 
 (add-to-list 'auto-mode-alist '("\\.jsx?\\'" . rjsx-mode))
 
-; Temporary to see if this works well for autocompleting etc. in js
-(add-to-list 'load-path "/home/trst2284/code/tern/emacs/")
-(autoload 'tern-mode "tern.el" nil t)
-(autoload 'tern-mode "tern-auto-complete.el" nil t)
+; Guard the tern load-path addition: only add it if the directory exists.
+(let ((tern-dir (expand-file-name "~/code/tern/emacs/")))
+  (when (file-directory-p tern-dir)
+    (add-to-list 'load-path tern-dir)
+    (autoload 'tern-mode "tern.el" nil t)
+    (autoload 'tern-mode "tern-auto-complete.el" nil t)
+    (eval-after-load 'tern
+       '(progn
+          (require 'tern-auto-complete)
+          (tern-ac-setup)))))
 
-(eval-after-load 'tern
-   '(progn
-      (require 'tern-auto-complete)
-      (tern-ac-setup)))
+; TypeScript / TSX / JSX via tide
+(use-package tide
+  :ensure t
+  :after (typescript-mode company flycheck)
+  :hook ((typescript-mode . tide-setup)
+         (typescript-mode . tide-hl-identifier-mode)))
 
-; (add-to-list 'company-backends 'company-tern)
+(defun setup-tide-mode ()
+  (interactive)
+  (tide-setup)
+  (flycheck-mode +1)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (eldoc-mode +1)
+  (tide-hl-identifier-mode +1)
+  (company-mode +1))
+
+;; aligns annotation to the right hand side
+(setq company-tooltip-align-annotations t)
+(add-hook 'typescript-mode-hook #'setup-tide-mode)
+
+(use-package web-mode
+  :ensure t)
+
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+(add-hook 'web-mode-hook
+          (lambda ()
+            (when (string-equal "tsx" (file-name-extension buffer-file-name))
+              (setup-tide-mode))))
+
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+(add-hook 'web-mode-hook
+          (lambda ()
+            (when (string-equal "jsx" (file-name-extension buffer-file-name))
+              (setup-tide-mode))))
+;; configure jsx-tide checker to run after your default jsx checker
+(flycheck-add-mode 'javascript-eslint 'web-mode)
+(setq web-mode-markup-indent-offset 2)
+(setq typescript-indent-level 2)

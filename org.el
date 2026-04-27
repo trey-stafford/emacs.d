@@ -7,6 +7,9 @@
     (setq org-log-done 'time)
     (setq org-log-into-drawer 'LOGBOOK))
 
+; Disable yasnippet in org-mode (yas-global-mode + org-indent-mode causes "args out of range")
+(add-hook 'org-mode-hook (lambda () (yas-minor-mode -1)))
+
 ; evil-org
 (use-package org-evil
   :ensure t)
@@ -91,12 +94,13 @@
       '((sequence "TODO(t)" "IN-PROGRESS(p)" "WAITING(w@/!)" "|" "DONE(d)" "CANCELED(c@)")))
 
 ; Disable relative line numbers in org mode to prevent major slow downs in large files.
-(add-hook 'org-mode-hook (lambda () (relative-line-numbers-mode -1)))
+(add-hook 'org-mode-hook (lambda () (display-line-numbers-mode -1)))
 
 (use-package ob-mermaid
   :ensure t)
 
-(setq ob-mermaid-cli-path "/home/trst2284/.nvm/versions/node/v22.2.0/bin/mmdc")
+(when (file-executable-p (expand-file-name "~/.nvm/versions/node/v22.2.0/bin/mmdc"))
+  (setq ob-mermaid-cli-path (expand-file-name "~/.nvm/versions/node/v22.2.0/bin/mmdc")))
 
 (org-babel-do-load-languages
     'org-babel-load-languages
