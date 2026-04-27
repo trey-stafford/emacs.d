@@ -7,6 +7,9 @@
     (setq org-log-done 'time)
     (setq org-log-into-drawer 'LOGBOOK))
 
+; Disable yasnippet in org-mode (yas-global-mode + org-indent-mode causes "args out of range")
+(add-hook 'org-mode-hook (lambda () (yas-minor-mode -1)))
+
 ; evil-org
 (use-package org-evil
   :ensure t)
@@ -91,7 +94,7 @@
       '((sequence "TODO(t)" "IN-PROGRESS(p)" "WAITING(w@/!)" "|" "DONE(d)" "CANCELED(c@)")))
 
 ; Disable relative line numbers in org mode to prevent major slow downs in large files.
-(add-hook 'org-mode-hook (lambda () (setq-local display-line-numbers nil)))
+(add-hook 'org-mode-hook (lambda () (display-line-numbers-mode -1)))
 
 (use-package ob-mermaid
   :ensure t)
