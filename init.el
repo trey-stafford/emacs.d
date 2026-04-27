@@ -342,9 +342,6 @@
 ; Set `.qmd` files (Quatro executable slides)
 (add-to-list 'auto-mode-alist '("\\.qmd\\'" . markdown-mode))
 
-; Start persp-mode
-(persp-mode)
-
 ; Auto-revert remote files
 (setq auto-revert-remote-files 't)
 
